@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notification App</title>
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 18px;
+            width: 350px;
+            text-align: center;
+            color: white;
+            box-shadow: 0px 0px 25px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        button {
+            width: 90%;
+            padding: 12px;
+            border: none;
+            outline: none;
+            background: white;
+            color: black;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: #f1f1f1;
+        }
+
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🔔 Notification Clicker</h2>
+
+        <button id="enableBtn">Enable Notifications</button>
+        <button id="notifyBtn">Send Notification</button>
+
+        <div id="status"></div>
+    </div>
+
+
+    <script>
+        
+        var enableBtn = document.getElementById("enableBtn");
+        var notifyBtn = document.getElementById("notifyBtn");
+        var statusText = document.getElementById("status");
+
+
+        function showMessage(message, success) {
+            statusText.innerText = message;
+
+            if (success === true) {
+                statusText.style.color = "lightgreen";
+            } else {
+                statusText.style.color = "red";
+            }
+
+            setTimeout(function() {
+                statusText.innerText = "";
+            }, 2000);
+        }
+
+
+        enableBtn.onclick = function() {
+
+            Notification.requestPermission().then(function(permission) {
+
+                if (permission === "granted") {
+                    showMessage("Notifications Enabled", true);
+                } else {
+                    showMessage("Permission Denied", false);
+                }
+
+            });
+
+        };
+
+
+        notifyBtn.onclick = function() {
+
+            if (Notification.permission === "granted") {
+
+                new Notification("👋 Hey there!");
+                showMessage("Notification Sent!", true);
+
+            } else {
+                showMessage("Enable permission first!", false);
+            }
+
+        };
+
+    </script>
+
+</body>
+</html>
